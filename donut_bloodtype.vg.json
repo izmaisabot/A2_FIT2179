@@ -1,0 +1,81 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "National Blood Type Distribution",
+    "subtitle": "Percentage of total donations across Malaysia",
+    "fontSize": 16,
+    "anchor": "middle"
+  },
+  "width": 320,
+  "height": 320,
+  "data": {
+    "url": "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/blood_donations_state.csv",
+    "format": { "type": "csv" }
+  },
+  "params": [
+    {
+      "name": "year_selection",
+      "value": 2024,
+      "bind": {
+        "input": "range",
+        "min": 2006,
+        "max": 2024,
+        "step": 1,
+        "name": "Year: "
+      }
+    }
+  ],
+  "transform": [
+    { "calculate": "year(datum.date)", "as": "year_field" },
+    { "filter": "datum.year_field == year_selection" },
+    { "filter": "datum.blood_type !== 'all'" },
+    { "calculate": "upper(datum.blood_type)", "as": "BT_Upper" },
+    {
+      "aggregate": [{ "op": "sum", "field": "donations", "as": "total" }],
+      "groupby": ["BT_Upper", "year_field"]
+    },
+    {
+      "window": [{ "op": "sum", "field": "total", "as": "grand_total" }],
+      "frame": [null, null]
+    },
+    {
+      "calculate": "datum.total / datum.grand_total",
+      "as": "percentage"
+    }
+  ],
+  "layer": [
+    {
+      "mark": { "type": "arc", "innerRadius": 80, "outerRadius": 140, "stroke": "white" },
+      "encoding": {
+        "theta": { "field": "total", "type": "quantitative" },
+        "color": {
+          "field": "BT_Upper",
+          "type": "nominal",
+          "scale": {
+            "domain": ["O", "A", "B", "AB"],
+            "range": ["#984ea3", "#e41a1c", "#377eb8", "#4daf4a"]
+          }
+        }
+      }
+    },
+    {
+      "mark": { "type": "text", "radius": 165, "fontSize": 12 },
+      "encoding": {
+        "theta": { "field": "total", "type": "quantitative" },
+        "text": { "field": "percentage", "type": "quantitative", "format": ".1%" }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 32,
+        "fontWeight": "bold",
+        "color": "#444"
+      },
+      "encoding": {
+        "text": { "field": "year_field", "type": "nominal" }
+      }
+    }
+  ],
+  "view": { "stroke": null }
+}

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 700,
+  "height": 400,
+  "projection": { "type": "mercator" },
+  "data": {
+    "url": "https://raw.githubusercontent.com/jnewbery/CartogramMalaysia/refs/heads/master/public/data/malaysia-states.topojson",
+    "format": { "type": "topojson", "feature": "states" }
+  },
+  "transform": [
+    {
+      "calculate": "datum.properties.Name == 'Kuala Lumpur' ? 'W.P. Kuala Lumpur' : datum.properties.Name == 'Penang' ? 'Pulau Pinang' : datum.properties.Name",
+      "as": "state_name"
+    },
+    {
+      "lookup": "state_name",
+      "from": {
+        "data": {
+          "url": "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/donor_rate_by_state.csv",
+          "format": { "type": "csv" }
+        },
+        "key": "state",
+        "fields": ["donor_rate"]
+      }
+    }
+  ],
+  "mark": { "type": "geoshape", "stroke": "white", "strokeWidth": 1 },
+  "encoding": {
+    "color": {
+      "field": "donor_rate",
+      "type": "quantitative",
+      "scale": { "scheme": "reds", "domain": [0, 10] },
+      "legend": { "title": "Donor Rate (%)" }
+    },
+    "tooltip": [
+      { "field": "state_name", "type": "nominal", "title": "State" },
+      { "field": "donor_rate", "type": "quantitative", "title": "Donor Rate (%)", "format": ".2f" }
+    ]
+  }
+}

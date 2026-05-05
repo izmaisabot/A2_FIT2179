@@ -1,0 +1,45 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Annual Blood Donations by State (2018-2024)",
+    "subtitle": "Comparing regional contributions to the national supply",
+    "fontSize": 16
+  },
+  "width": 600,
+  "height": 400,
+  "data": {
+    "url": "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/blood_donations_state.csv",
+    "format": { "type": "csv" }
+  },
+  "transform": [
+    { "filter": "datum.blood_type === 'all'" },
+    { "calculate": "year(datum.date)", "as": "year" },
+    { "filter": "datum.year >= 2018" }
+  ],
+  "mark": "bar",
+  "encoding": {
+    "y": {
+      "field": "state",
+      "type": "nominal",
+      "title": "State",
+      "sort": "-x" 
+    },
+    "x": {
+      "aggregate": "sum",
+      "field": "donations",
+      "type": "quantitative",
+      "title": "Total Donations"
+    },
+    "color": {
+      "field": "year",
+      "type": "ordinal",
+      "scale": { "scheme": "reds" },
+      "title": "Year"
+    },
+    "tooltip": [
+      { "field": "state", "type": "nominal" },
+      { "field": "year", "type": "ordinal" },
+      { "field": "donations", "aggregate": "sum", "type": "quantitative", "format": "," }
+    ]
+  }
+}

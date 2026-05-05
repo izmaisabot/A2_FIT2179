@@ -1,0 +1,58 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Daily Blood Donations Over Time by Blood Type",
+    "subtitle": "7-day rolling average — national totals (2006–2025)",
+    "fontSize": 16,
+    "subtitleFontSize": 12
+  },
+  "width": 800,
+  "height": 350,
+  "data": {
+    "url": "https://storage.data.gov.my/healthcare/blood_donations.csv",
+    "format": { "type": "csv" }
+  },
+  "transform": [
+    { "filter": "datum.blood_type !== 'all'" },
+    { "filter": "datum.date >= '2010-01-01'" },
+    {
+      "window": [{ "op": "mean", "field": "donations", "as": "rolling_mean" }],
+      "frame": [-3, 3],
+      "groupby": ["blood_type"]
+    }
+  ],
+  "mark": { "type": "line", "strokeWidth": 1.8, "opacity": 0.85 },
+  "encoding": {
+    "x": {
+      "field": "date",
+      "type": "temporal",
+      "title": "Date",
+      "axis": { "format": "%Y", "labelAngle": 0 }
+    },
+    "y": {
+      "field": "rolling_mean",
+      "type": "quantitative",
+      "title": "Donations (7-day avg)"
+    },
+    "color": {
+      "field": "blood_type",
+      "type": "nominal",
+      "title": "Blood Type",
+      "scale": {
+        "domain": ["A", "B", "AB", "O"],
+        "range": ["#e41a1c", "#377eb8", "#4daf4a", "#984ea3"]
+      }
+    },
+    "tooltip": [
+      { "field": "date", "type": "temporal", "title": "Date", "format": "%d %b %Y" },
+      { "field": "blood_type", "type": "nominal", "title": "Blood Type" },
+      { "field": "rolling_mean", "type": "quantitative", "title": "7-day Avg", "format": ".0f" }
+    ]
+  },
+  "selection": {
+    "brush": {
+      "type": "interval",
+      "encodings": ["x"]
+    }
+  }
+}

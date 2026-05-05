@@ -1,0 +1,74 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Regional Blood Donation Trends (2025)",
+    "subtitle": "Filtered by region | Reformatted axis and restricted timeframe",
+    "fontSize": 16
+  },
+  "params": [
+    {
+      "name": "Region_Selection",
+      "value": "Central",
+      "bind": {
+        "input": "select",
+        "options": ["Central", "Northern", "Southern", "East Coast", "East Malaysia"],
+        "name": "Select Region: "
+      }
+    }
+  ],
+  "data": {
+    "url": "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/blood_donations_state.csv",
+    "format": { "type": "csv" }
+  },
+  "transform": [
+    { "filter": "datum.blood_type === 'all'" },
+    { "calculate": "year(datum.date)", "as": "year_val" },
+    { "filter": "datum.year_val == 2025" },
+    {
+      "calculate": "datum.state == 'W.P. Kuala Lumpur' || datum.state == 'Selangor' ? 'Central' : datum.state == 'Perlis' || datum.state == 'Kedah' || datum.state == 'Pulau Pinang' || datum.state == 'Perak' ? 'Northern' : datum.state == 'Johor' || datum.state == 'Melaka' || datum.state == 'Negeri Sembilan' ? 'Southern' : datum.state == 'Kelantan' || datum.state == 'Terengganu' || datum.state == 'Pahang' ? 'East Coast' : 'East Malaysia'",
+      "as": "Region"
+    },
+    { "filter": "datum.Region == Region_Selection" },
+    { "timeUnit": "yearmonth", "field": "date", "as": "month" },
+    {
+      "aggregate": [{ "op": "sum", "field": "donations", "as": "monthly_donations" }],
+      "groupby": ["month", "state", "Region"]
+    }
+  ],
+  "facet": {
+    "field": "state",
+    "type": "nominal",
+    "header": { "title": null, "labelFontSize": 12, "labelPadding": 10 }
+  },
+  "spec": {
+    "width": 200,
+    "height": 100,
+    "mark": { "type": "area", "line": {"color": "#c0392b"}, "color": "#f2d7d5" },
+    "encoding": {
+      "x": {
+        "field": "month",
+        "type": "temporal",
+        "title": null,
+        "axis": { 
+          "format": "%b %y", 
+          "labelAngle": -45, 
+          "grid": false,
+          "tickCount": "month"
+        }
+      },
+      "y": {
+        "field": "monthly_donations",
+        "type": "quantitative",
+        "axis": { "title": null, "tickCount": 3, "grid": true, "gridOpacity": 0.4 }
+      },
+      "tooltip": [
+        { "field": "state", "type": "nominal" },
+        { "field": "month", "type": "temporal", "format": "%B %Y", "title": "Date" },
+        { "field": "monthly_donations", "type": "quantitative", "format": ",", "title": "Donations" }
+      ]
+    }
+  },
+  "config": {
+    "view": { "stroke": "transparent" }
+  }
+}
