@@ -8,7 +8,7 @@
   "width": 800,
   "height": 350,
   "data": {
-    "url": "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/blood_donations.csv",
+    "url": "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/datasets/blood_donations.csv",
     "format": { "type": "csv" }
   },
   "params": [

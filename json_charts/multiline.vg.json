@@ -2,40 +2,43 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
     "text": "Daily Blood Donations Over Time by Blood Type",
-    "subtitle": "7-day rolling average — national totals (2006–2025)",
+    "subtitle": "7-day rolling average — national totals (2010–2025)",
     "fontSize": 16,
     "subtitleFontSize": 12
   },
   "width": 800,
   "height": 350,
   "data": {
-    "url": "https://storage.data.gov.my/healthcare/blood_donations.csv",
+    "url": "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/datasets/blood_donations.csv",
     "format": { "type": "csv" }
   },
   "transform": [
     { "filter": "datum.blood_type !== 'all'" },
-    { "filter": "datum.date >= '2010-01-01'" },
+    { "filter": "year(datum.date) >= 2010" },
     {
       "window": [{ "op": "mean", "field": "donations", "as": "rolling_mean" }],
       "frame": [-3, 3],
-      "groupby": ["blood_type"]
-    }
+      "groupby": ["blood_type"],
+      "sort": [{"field": "date"}]
+    },
+    { "calculate": "upper(datum.blood_type)", "as": "BT_Upper" }
   ],
-  "mark": { "type": "line", "strokeWidth": 1.8, "opacity": 0.85 },
+  "mark": { "type": "line", "strokeWidth": 1.8, "opacity": 0.85, "interpolate": "monotone" },
   "encoding": {
     "x": {
       "field": "date",
       "type": "temporal",
       "title": "Date",
-      "axis": { "format": "%Y", "labelAngle": 0 }
+      "axis": { "format": "%Y", "labelAngle": 0, "grid": false }
     },
     "y": {
       "field": "rolling_mean",
       "type": "quantitative",
-      "title": "Donations (7-day avg)"
+      "title": "Donations (7-day avg)",
+      "scale": {"zero": false}
     },
     "color": {
-      "field": "blood_type",
+      "field": "BT_Upper",
       "type": "nominal",
       "title": "Blood Type",
       "scale": {
@@ -45,14 +48,14 @@
     },
     "tooltip": [
       { "field": "date", "type": "temporal", "title": "Date", "format": "%d %b %Y" },
-      { "field": "blood_type", "type": "nominal", "title": "Blood Type" },
+      { "field": "BT_Upper", "type": "nominal", "title": "Blood Type" },
       { "field": "rolling_mean", "type": "quantitative", "title": "7-day Avg", "format": ".0f" }
     ]
   },
-  "selection": {
-    "brush": {
-      "type": "interval",
-      "encodings": ["x"]
+  "params": [
+    {
+      "name": "brush",
+      "select": { "type": "interval", "encodings": ["x"] }
     }
-  }
+  ]
 }

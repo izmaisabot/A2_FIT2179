@@ -16,7 +16,7 @@
       "lookup": "state_name",
       "from": {
         "data": {
-          "url": "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/donor_rate_by_state.csv",
+          "url": "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/datasets/donor_rate_by_state.csv",
           "format": { "type": "csv" }
         },
         "key": "state",
