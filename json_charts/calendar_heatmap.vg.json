@@ -1,13 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": {
-    "text": "Daily Blood Donation Pulse (2023)",
-    "subtitle": "Darker red indicates higher donation volume. Gaps reveal holidays and weekends.",
-    "fontSize": 16,
-    "anchor": "start"
-  },
   "width": 800,
-  "height": 150,
+  "height": 250,
   "data": {
     "url": "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/datasets/blood_donations_state.csv",
     "format": { "type": "csv" }

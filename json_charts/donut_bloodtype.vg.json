@@ -1,11 +1,5 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": {
-    "text": "National Blood Type Distribution",
-    "subtitle": "Percentage of total donations across Malaysia",
-    "fontSize": 16,
-    "anchor": "middle"
-  },
   "width": 320,
   "height": 320,
   "data": {
@@ -29,10 +23,10 @@
     { "calculate": "year(datum.date)", "as": "year_field" },
     { "filter": "datum.year_field == year_selection" },
     { "filter": "datum.blood_type !== 'all'" },
-    { "calculate": "upper(datum.blood_type)", "as": "BT_Upper" },
+    { "calculate": "upper(datum.blood_type)", "as": "Blood Type" },
     {
       "aggregate": [{ "op": "sum", "field": "donations", "as": "total" }],
-      "groupby": ["BT_Upper", "year_field"]
+      "groupby": ["Blood Type", "year_field"]
     },
     {
       "window": [{ "op": "sum", "field": "total", "as": "grand_total" }],
@@ -47,9 +41,10 @@
     {
       "mark": { "type": "arc", "innerRadius": 80, "outerRadius": 140, "stroke": "white" },
       "encoding": {
-        "theta": { "field": "total", "type": "quantitative" },
+        "theta": { "field": "total", "type": "quantitative", "stack": true},
+        "order": { "field": "Blood Type", "type": "nominal", "sort": "ascending"},
         "color": {
-          "field": "BT_Upper",
+          "field": "Blood Type",
           "type": "nominal",
           "scale": {
             "domain": ["O", "A", "B", "AB"],
@@ -61,7 +56,8 @@
     {
       "mark": { "type": "text", "radius": 165, "fontSize": 12 },
       "encoding": {
-        "theta": { "field": "total", "type": "quantitative" },
+        "theta": { "field": "total", "type": "quantitative", "stack": true, "bandPosition": 0.5},
+        "order": { "field": "Blood Type", "type": "nominal", "sort": "ascending"},
         "text": { "field": "percentage", "type": "quantitative", "format": ".1%" }
       }
     },
@@ -69,7 +65,6 @@
       "mark": {
         "type": "text",
         "fontSize": 32,
-        "fontWeight": "bold",
         "color": "#444"
       },
       "encoding": {

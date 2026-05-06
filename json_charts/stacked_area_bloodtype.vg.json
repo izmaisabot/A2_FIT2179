@@ -1,10 +1,5 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": {
-    "text": "Monthly Blood Donation Volume",
-    "subtitle": "Use the slider to filter by year",
-    "fontSize": 16
-  },
   "width": 800,
   "height": 350,
   "data": {
@@ -27,7 +22,7 @@
   "transform": [
     { "filter": "datum.blood_type !== 'all'" },
     { "filter": "year(datum.date) == year_selection" },
-    { "calculate": "upper(datum.blood_type)", "as": "blood_type_upper" },
+    { "calculate": "upper(datum.blood_type)", "as": "Blood Type" },
     {
       "timeUnit": "month",
       "field": "date",
@@ -35,7 +30,7 @@
     },
     {
       "aggregate": [{ "op": "sum", "field": "donations", "as": "monthly_donations" }],
-      "groupby": ["month_only", "blood_type_upper"]
+      "groupby": ["month_only", "Blood Type"]
     }
   ],
   "mark": { "type": "area", "opacity": 0.85 },
@@ -52,7 +47,7 @@
       "title": "Total Donations"
     },
     "color": {
-      "field": "blood_type_upper",
+      "field": "Blood Type",
       "type": "nominal",
       "scale": {
         "domain": ["A", "B", "AB", "O"],
@@ -61,7 +56,7 @@
     },
     "tooltip": [
       { "field": "month_only", "type": "temporal", "title": "Month", "format": "%B" },
-      { "field": "blood_type_upper", "type": "nominal", "title": "Type" },
+      { "field": "Blood Type", "type": "nominal", "title": "Type" },
       { "field": "monthly_donations", "type": "quantitative", "title": "Donations" }
     ]
   }
