@@ -1,11 +1,5 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": {
-    "text": "State Donation Ranking: 2019 vs 2024",
-    "subtitle": "Rising lines = Rank Improved | Falling lines = Rank Declined",
-    "fontSize": 16,
-    "anchor": "start"
-  },
   "width": 400,
   "height": 550,
   "data": {
@@ -37,10 +31,11 @@
           "axis": { 
             "labelFontSize": 14, 
             "labelFontWeight": "bold", 
-            "orient": "top", 
+            "orient": "bottom", 
             "domain": false, 
             "ticks": false,
-            "labelPadding": 20
+            "labelPadding": 0,
+            "labelAngle": 0
           }
         },
         "y": {
@@ -62,7 +57,7 @@
     {
       "mark": { "type": "circle", "size": 100, "color": "#c0392b", "opacity": 1 },
       "encoding": {
-        "x": { "field": "year_val", "type": "ordinal" },
+        "x": { "field": "year_val", "type": "ordinal", "scale": {"padding": 0.8}},
         "y": { "field": "rank", "type": "quantitative" },
         "tooltip": [
           { "field": "state", "type": "nominal" },
