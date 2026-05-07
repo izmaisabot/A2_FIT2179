@@ -1,0 +1,113 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 450,
+  "height": 200,
+  "data": {
+    "url": "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/datasets/blood_donations.csv",
+    "format": { "type": "csv" }
+  },
+  "transform": [
+    { "filter": "datum.blood_type !== 'all'" },
+    { "calculate": "upper(datum.blood_type)", "as": "bt_label" },
+    {
+      "aggregate": [{ "op": "sum", "field": "donations", "as": "total" }],
+      "groupby": ["bt_label"]
+    },
+    {
+      "window": [{ "op": "sum", "field": "total", "as": "grand_total" }],
+      "frame": [null, null]
+    },
+    {
+      "calculate": "datum.total / datum.grand_total * 100",
+      "as": "percentage"
+    },
+    {
+      "calculate": "format(datum.percentage, '.1f') + '%'",
+      "as": "pct_text"
+    }
+  ],
+  "layer": [
+    {
+      "mark": { "type": "bar", "height": 3 },
+      "encoding": {
+        "y": {
+          "field": "bt_label",
+          "type": "nominal",
+          "sort": "-x",
+          "title": null
+        },
+        "x": {
+          "field": "percentage",
+          "type": "quantitative",
+          "title": "Share of National Donations (%)",
+          "scale": { "domain": [0, 50] }
+        },
+        "color": {
+          "field": "bt_label",
+          "type": "nominal",
+          "scale": {
+            "domain": ["A", "B", "AB", "O"],
+            "range": ["#d32f2f", "#1976d2", "#388e3c", "#7b1fa2"]
+          },
+          "legend": null
+        }
+      }
+    },
+    {
+      "params": [
+        {
+          "name": "highlight",
+          "select": { "type": "point", "on": "mouseover", "clear": "mouseout" }
+        }
+      ],
+      "mark": { "type": "circle", "size": 300, "stroke": "white", "strokeWidth": 1 },
+      "encoding": {
+        "y": {
+          "field": "bt_label",
+          "type": "nominal",
+          "sort": "-x",
+          "title": null
+        },
+        "x": {
+          "field": "percentage",
+          "type": "quantitative",
+          "scale": { "domain": [0, 50] }
+        },
+        "color": {
+          "field": "bt_label",
+          "type": "nominal",
+          "scale": {
+            "domain": ["A", "B", "AB", "O"],
+            "range": ["#d32f2f", "#1976d2", "#388e3c", "#7b1fa2"]
+          },
+          "legend": null
+        },
+        "opacity": {
+          "condition": { "param": "highlight", "value": 1, "empty": true },
+          "value": 0.3
+        },
+        "tooltip": [
+          { "field": "bt_label", "type": "nominal", "title": "Blood Type" },
+          { "field": "total", "type": "quantitative", "title": "Total Donations", "format": "," },
+          { "field": "percentage", "type": "quantitative", "title": "Share (%)", "format": ".1f" }
+        ]
+      }
+    },
+    {
+      "mark": { "type": "text", "align": "left", "dx": 15, "fontSize": 12 },
+      "encoding": {
+        "y": { "field": "bt_label", "type": "nominal", "sort": "-x" },
+        "x": { "field": "percentage", "type": "quantitative" },
+        "text": { "field": "pct_text", "type": "nominal" },
+        "color": {
+          "condition": { "param": "highlight", "value": "black", "empty": true },
+          "value": "#999"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": { "stroke": null },
+    "axis": { "grid": false, "domain": false }
+  }
+}
