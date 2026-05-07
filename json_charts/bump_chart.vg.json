@@ -1,0 +1,64 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 600,
+  "height": 400,
+  "data": {
+    "url": "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/datasets/blood_donations_state.csv",
+    "format": { "type": "csv" }
+  },
+  "transform": [
+    { "filter": "datum.blood_type === 'all'" },
+    {
+      "calculate": "year(datum.date)",
+      "as": "year_num"
+    },
+    { 
+      "filter": "datum.year_num >= 2016 && datum.year_num <= 2025" 
+    },
+    {
+      "aggregate": [{ "op": "sum", "field": "donations", "as": "annual_donations" }],
+      "groupby": ["year_num", "state"]
+    },
+    {
+      "window": [{ "op": "rank", "as": "rank" }],
+      "sort": [{ "field": "annual_donations", "order": "descending" }],
+      "groupby": ["year_num"]
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "point": true,
+        "interpolate": "monotone",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "year_num",
+          "type": "ordinal",
+          "title": "Year",
+          "axis": { "labelAngle": 0 }
+        },
+        "y": {
+          "field": "rank",
+          "type": "quantitative",
+          "title": "Rank",
+          "scale": { "reverse": true, "domain": [1, 13] }
+        },
+        "color": {
+          "field": "state",
+          "type": "nominal",
+          "title": "State",
+          "scale": { "scheme": "tableau20" }
+        },
+        "tooltip": [
+          { "field": "state", "title": "State" },
+          { "field": "year_num", "title": "Year" },
+          { "field": "rank", "title": "Rank" },
+          { "field": "annual_donations", "title": "Donations", "format": "," }
+        ]
+      }
+    }
+  ]
+}

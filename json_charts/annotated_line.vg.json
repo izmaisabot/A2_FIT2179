@@ -1,0 +1,93 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 750,
+  "height": 400,
+  "data": {
+    "url": "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/datasets/blood_donations.csv",
+    "format": { "type": "csv" }
+  },
+  "transform": [
+    { "filter": "datum.blood_type === 'all'" },
+    { "timeUnit": "year", "field": "date", "as": "year" },
+    { "filter": "year(datum.year) <= 2025"},
+    {
+      "aggregate": [{ "op": "sum", "field": "donations", "as": "annual_donations" }],
+      "groupby": ["year"]
+    }
+  ],
+  "layer": [
+    {
+      "mark": { "type": "area", "color": "#c0392b", "opacity": 0.1, "line": false },
+      "encoding": {
+        "x": { "field": "year", "type": "temporal" },
+        "y": { "field": "annual_donations", "type": "quantitative" }
+      }
+    },
+    {
+      "mark": { "type": "line", "color": "#c0392b", "strokeWidth": 2.5 },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "temporal",
+          "title": "Year",
+          "axis": { "format": "%Y", "labelAngle": 0 }
+        },
+        "y": {
+          "field": "annual_donations",
+          "type": "quantitative",
+          "title": "Total Donations",
+          "axis": { "format": "~s" },
+          "scale": { "domain": [0, 700000] }
+        },
+        "tooltip": [
+          { "field": "year", "type": "temporal", "title": "Year", "format": "%Y" },
+          { "field": "annual_donations", "type": "quantitative", "title": "Total Donations", "format": "," }
+        ]
+      }
+    },
+    {
+      "mark": { "type": "point", "color": "#c0392b", "size": 60, "filled": true },
+      "encoding": {
+        "x": { "field": "year", "type": "temporal" },
+        "y": { "field": "annual_donations", "type": "quantitative" }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          { "year": "2020", "label": "COVID-19 MCO", "y": 650000 },
+          { "year": "2015", "label": "Blood shortage alert", "y": 650000 },
+          { "year": "2011", "label": "National blood drive", "y": 650000 }
+        ]
+      },
+      "mark": { "type": "rule", "strokeDash": [4, 3], "color": "#888", "strokeWidth": 1 },
+      "encoding": {
+        "x": { "field": "year", "type": "temporal", "timeUnit": "year" }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          { "year": "2020", "label": "COVID-19 MCO", "y": 650000 },
+          { "year": "2015", "label": "Blood shortage alert", "y": 650000 },
+          { "year": "2011", "label": "National blood drive", "y": 650000 }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 5,
+        "dy": -8,
+        "fontSize": 12,
+        "fontStyle": "italic",
+        "color": "#555"
+      },
+      "encoding": {
+        "x": { "field": "year", "type": "temporal", "timeUnit": "year" },
+        "y": { "field": "y", "type": "quantitative" },
+        "text": { "field": "label", "type": "nominal" }
+      }
+    }
+  ],
+  "config": { "view": { "stroke": "transparent" } }
+}
