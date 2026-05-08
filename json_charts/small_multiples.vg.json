@@ -7,10 +7,10 @@
   "params": [
     {
       "name": "Region_Selection",
-      "value": "Central",
+      "value": "Northern",
       "bind": {
         "input": "select",
-        "options": ["Central", "Northern", "Southern", "East Coast", "East Malaysia"],
+        "options": ["Northern", "Southern", "Central", "East Coast", "East Malaysia"],
         "name": "Select Region: "
       }
     }
@@ -40,8 +40,8 @@
     "header": { "title": null, "labelFontSize": 12, "labelPadding": 10 }
   },
   "spec": {
-    "width": 200,
-    "height": 100,
+    "width": "container",
+    "height": 150,
     "mark": { "type": "area", "line": {"color": "#c0392b"}, "color": "#f2d7d5" },
     "encoding": {
       "x": {
@@ -69,5 +69,8 @@
   },
   "config": {
     "view": { "stroke": "transparent" }
+  },
+  "resolve": {
+    "scale": {"y": "independent"}
   }
 }

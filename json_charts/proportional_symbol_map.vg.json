@@ -2,7 +2,9 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": "container",
   "height": "container",
-  "projection": { "type": "mercator" },
+  "padding": 0,
+  "projection": { "type": "mercator", "scale": 1800, 
+  "center": [112.3, 0.5]},
   "layer": [
     {
       "data": {
@@ -46,8 +48,8 @@
             "title": "Total Donations", 
             "format": ",", 
             "orient": "none",
-            "legendX": 220,
-            "legendY": 380,
+            "legendX": 0,
+            "legendY": 280,
             "direction": "horizontal",
             "values": [0, 50000, 100000, 150000, 200000],
             "labelExpr": "format(datum.value, ',')",
@@ -62,15 +64,7 @@
             "scheme": "reds", 
             "domain": [0, 10]
           },
-          "legend": { 
-            "title": "Donor Rate (%)", 
-            "orient": "none",
-            "legendX": 0,
-            "legendY": 380,
-            "direction": "horizontal",
-            "values": [0, 2, 4, 6, 8, 10],
-            "gradientLength": 180
-          }
+          "legend": null
         },
         "tooltip": [
           { "field": "state", "type": "nominal", "title": "State" },
