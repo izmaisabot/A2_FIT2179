@@ -73,15 +73,6 @@
           "type": "quantitative",
           "scale": { "domain": [0, 50] }
         },
-        "color": {
-          "field": "bt_label",
-          "type": "nominal",
-          "scale": {
-            "domain": ["A", "B", "AB", "O"],
-            "range": ["#d32f2f", "#1976d2", "#388e3c", "#7b1fa2"]
-          },
-          "legend": null
-        },
         "opacity": {
           "condition": { "param": "highlight", "value": 1, "empty": true },
           "value": 0.3
