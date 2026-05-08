@@ -1,13 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": {
-    "text": "Daily Blood Donations Over Time by Blood Type",
-    "subtitle": "7-day rolling average — national totals (2010–2025)",
-    "fontSize": 16,
-    "subtitleFontSize": 12
-  },
-  "width": 800,
-  "height": 350,
+  "width": "container",
+  "height": "container",
   "data": {
     "url": "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/datasets/blood_donations.csv",
     "format": { "type": "csv" }
