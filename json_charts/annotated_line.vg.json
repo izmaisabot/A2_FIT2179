@@ -49,14 +49,17 @@
       "mark": { "type": "point", "color": "#c0392b", "size": 60, "filled": true },
       "encoding": {
         "x": { "field": "year", "type": "temporal" },
-        "y": { "field": "annual_donations", "type": "quantitative" }
+        "y": { "field": "annual_donations", "type": "quantitative" },
+      "tooltip": [
+          {"field": "year", "type": "temporal", "title": "Year", "format": "%Y"},
+          {"field": "annual_donations", "type": "quantitative", "title": "Donations", "format": ","}
+        ]
       }
     },
     {
       "data": {
         "values": [
           { "year": "2020", "label": "COVID-19 MCO", "y": 650000 },
-          { "year": "2015", "label": "Blood shortage alert", "y": 650000 },
           { "year": "2011", "label": "National blood drive", "y": 650000 }
         ]
       },

@@ -47,7 +47,7 @@
       "field": "yearly_total",
       "type": "quantitative",
       "title": "New Donors",
-      "scale": {"scheme": "reds"},
+      "scale": {"scheme": "purpleblue"},
       "legend": {"orient":"none", "direction": "horizontal", "gradientLength":200, "legendX": 10, "legendY": 380}
     },
     "tooltip": [

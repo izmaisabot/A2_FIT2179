@@ -45,7 +45,7 @@
           {"op": "mean", "field": "period_avg", "as": "y_avg"}
         ]}
       ],
-      "mark": {"type": "rule", "strokeWidth": 3, "strokeDash": [8, 4], "color": "#2ca02c"},
+      "mark": {"type": "rule", "strokeWidth": 3, "strokeDash": [8, 4], "color": "#6f6f6f"},
       "encoding": {
         "x": {"field": "x_start", "type": "temporal"},
         "x2": {"field": "x_end"},
