@@ -60,7 +60,7 @@
           {"op": "mean", "field": "period_avg", "as": "y_avg"}
         ]}
       ],
-      "mark": {"type": "text", "fontWeight": "bold", "fontSize": 14, "dy": -60, "color": "#1b621b", "align": "left", "dx": 410},
+      "mark": {"type": "text", "fontWeight": "bold", "fontSize": 14, "dy": -60, "color": "#6f6f6f", "align": "left", "dx": 410},
       "encoding": {
         "x": {"field": "x_start", "type": "temporal"},
         "y": {"field": "y_avg", "type": "quantitative"},

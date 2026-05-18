@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FIT2179: Blood Donation Analysis in Malaysia</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fcfcfc;
+      margin: 40px;
+      line-height: 1.6;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: -30px;
+      margin-top: -30px;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+    .chart-box {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      border: 1px solid #bcbcbc;
+      width: 100%;
+      max-width: 1200px;
+      box-sizing: border-box;
+    }
+    h2 { color: rgb(45, 45, 45); border-bottom: 2px solid #f3a19b; padding-bottom: 10px; font-size: 22px; font-weight: 500; }
+    p { max-width: 100%; text-align: left; color: #555; margin-bottom: 20px; }
+
+    .chart-container {
+      width: 100%;
+      min-height: 250px;
+      height: auto;
+    }
+
+    .side-by-side {
+      display: flex; 
+      gap: 30px; 
+      align-items: stretch;
+      flex-wrap: wrap;
+    }
+
+    .side-by-side > div {
+      flex: 1;
+      min-width: 300px;
+    }
+    #chart11, #chart1, #chart2, #chart6, #chart8, #chart15, #chart13{
+    height: 350px;
+    width: 100%;
+    }
+    #chart7, #chart10, #chart4{
+    height: 500px;
+    width: 100%;
+    }
+    #chart3 {
+    height: auto;
+    min-height: 0;
+    width: 100%;
+    display: block;
+    }
+    #chart12, #chart5, #chart9 {
+    height: 400px;
+    width: 100%;
+    }
+    #chart14 {
+    height: 400px;
+    width: 100%;
+  }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+  <div class="chart-box">
+    <div class="header">
+      <h1 style = "font-family: 'Times New Roman', Times, serif; font-size: 50px;">Data Visualisation 2: Blood Donation Trends</h1>
+    </div>
+  </div>
+
+  <div class="chart-box">
+    <div class="side-by-side">
+      <div>
+        <h2>Total Blood Donations Over Time</h2>
+        <div id="chart11" class="chart-container"></div>
+      </div>
+      <div>
+        <h2>National Blood Type Distribution</h2>
+        <div id="chart8"></div>
+      </div>
+    </div>
+      <div>
+      <h2>Daily Donation Intensity</h2>
+      <div id="chart2"></div>
+    </div>
+  </div>
+
+  <div class="chart-box">
+    <div class="side-by-side">
+      <div>
+        <h2>Total Blood Donation (2024)</h2>
+        <div id="chart9" class="chart-container"></div>
+      </div>
+      <div>
+        <h2>Monthly Blood Donation Volume</h2>
+        <div id ="chart5" class="chart-container"></div>
+      </div>
+    </div>
+      <div>
+      <h2>State Trends (2025)</h2>
+      <div id="chart3"></div>
+    </div>
+    <div class="side-by-side">
+      <div>
+        <h2>State Ranking (2016-2025)</h2>
+        <div id="chart10" class="chart-container"></div>
+      </div>
+      <div>
+        <h2>State Ranking: 2019 vs 2024</h2>
+        <div id="chart4"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-box">
+    <div class="side-by-side">
+      <div>
+        <h2>Monthly Blood Donation Volume</h2>
+        <div id="chart6" class="chart-container"></div>
+      </div>
+      <div>
+        <h2>Blood Type Composition</h2>
+        <div id ="chart1" class="chart-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-box">
+    <div>
+      <h2>Total New Donors Trend (2015-2025)</h2>
+      <div id="chart15" class="chart-container"></div>
+      </div>
+
+    <div class="side-by-side">
+      <div>
+        <h2>New Donors By States</h2>
+        <div id="chart14" class="chart-container"></div>
+      </div>
+      <div>
+        <h2>New Donors By Age Group</h2>
+        <div id ="chart13" class="chart-container"></div>
+      </div>
+    </div>
+  </div>
+  <div class="chart-box">
+    <div>
+      <h2>Data Sources</h2>
+      <ol>
+      <li>Government of Malaysia. (2026). Daily Blood Donations by Blood Group | data.gov.my. Data.gov.my; data.gov.my. https://data.gov.my/data-catalogue/blood_donations</li>
+      <li>Government of Malaysia. (2025). Daily Blood Donations by Blood Group & State | data.gov.my. Data.gov.my; data.gov.my. https://data.gov.my/data-catalogue/blood_donations_state</li>
+      <li>MoH-Malaysia. (2025). data-darah-public/newdonors_state.csv at main · MoH-Malaysia/data-darah-public. GitHub. https://github.com/MoH-Malaysia/data-darah-public/blob/main/newdonors_state.csv</li>
+      </ol>
+      <p>Created by Isaac Ma Kye Jay (36206709) on 18/5/2026</p>
+    </div>
+  </div>
+  </div>
+
+
+  <script type="text/javascript">
+    var embedOpt = { actions: false, width: "container", height: "container" };
+
+    var spec1 = "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/json_charts/donut_bloodtype.vg.json";
+    var spec2 = "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/json_charts/calendar_heatmap.vg.json";
+    var spec3 = "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/json_charts/small_multiples.vg.json";
+    var spec4 = "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/json_charts/slope_chart_rank.vg.json";
+    var spec5 = "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/json_charts/grouped_bar_state.vg.json";
+    var spec6 = "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/json_charts/stacked_area_bloodtype.vg.json";
+    var spec7 = "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/json_charts/choropleth.vg.json";
+    var spec11 = "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/json_charts/annotated_line.vg.json";
+    var spec12 = "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/json_charts/multiline.vg.json";
+    var spec10 = "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/json_charts/bump_chart.vg.json";
+    var spec9 = "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/json_charts/proportional_symbol_map.vg.json";
+    var spec8 = "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/json_charts/lollipop.vg.json";
+    var spec13 = "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/json_charts/new_donors_by_agegroup.vg.json";
+    var spec14 = "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/json_charts/new_donors_by_state.vg.json";
+    var spec15 = "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/json_charts/new_donors_multiline.vg.json";
+
+
+    vegaEmbed('#chart1',  spec1,  embedOpt).catch(console.error);
+    vegaEmbed('#chart2',  spec2,  embedOpt).catch(console.error);
+    vegaEmbed('#chart4',  spec4,  embedOpt).catch(console.error);
+    vegaEmbed('#chart5',  spec5,  {actions: false, width: "container"}).catch(console.error);
+    vegaEmbed('#chart8',  spec8,  embedOpt).catch(console.error);
+    vegaEmbed('#chart9', spec9, {actions: false, width: "container"}).catch(console.error);
+    vegaEmbed('#chart10', spec10, embedOpt).catch(console.error);
+    vegaEmbed('#chart12', spec12, embedOpt).catch(console.error);
+    vegaEmbed('#chart6',  spec6,  embedOpt).catch(console.error);
+    vegaEmbed('#chart11', spec11, embedOpt).catch(console.error);
+    vegaEmbed('#chart7',  spec7,  embedOpt).catch(console.error);
+    vegaEmbed('#chart3', spec3, {"actions": false}).catch(console.error);
+    vegaEmbed('#chart14',  spec14,  {actions: false, width: "container"}).catch(console.error);
+    vegaEmbed('#chart13',  spec13,  {actions: false, width: "container"}).catch(console.error);
+    vegaEmbed('#chart15',  spec15,  {actions: false, width: "container"}).catch(console.error);
+
+  </script>
+
+</body>
+</html>
