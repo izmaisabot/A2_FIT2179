@@ -9,7 +9,7 @@
   "params": [
     {
       "name": "year_filter",
-      "value": 2023,
+      "value": 2024,
       "bind": { "input": "select", "options": [2022, 2023, 2024], "name": "Select Year: " }
     }
   ],
@@ -40,7 +40,7 @@
     "color": {
       "field": "total_daily_donations",
       "type": "quantitative",
-      "scale": { "scheme": "reds" },
+      "scale": { "scheme": "purpleblue" },
       "legend": { "title": "Donations", "format": "~s" }
     },
     "tooltip": [

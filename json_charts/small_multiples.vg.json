@@ -40,7 +40,7 @@
     "header": { "title": null, "labelFontSize": 12, "labelPadding": 10 }
   },
   "spec": {
-    "width": "container",
+    "width": 330,
     "height": 150,
     "mark": { "type": "area", "line": {"color": "#c0392b"}, "color": "#f2d7d5" },
     "encoding": {

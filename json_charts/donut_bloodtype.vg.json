@@ -47,8 +47,8 @@
           "field": "Blood Type",
           "type": "nominal",
           "scale": {
-            "domain": ["O", "A", "B", "AB"],
-            "range": ["#984ea3", "#e41a1c", "#377eb8", "#4daf4a"]
+            "domain": ["A", "B", "AB", "O"],
+            "range": ["#674a40", "#50a3a4", "#fcaf38", "#f95335"]
           }
         }
       }

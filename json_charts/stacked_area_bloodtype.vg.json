@@ -9,7 +9,7 @@
   "params": [
     {
       "name": "year_selection",
-      "value": 2023,
+      "value": 2024,
       "bind": {
         "input": "range",
         "min": 2006,
@@ -51,7 +51,7 @@
       "type": "nominal",
       "scale": {
         "domain": ["A", "B", "AB", "O"],
-        "range": ["#e41a1c", "#377eb8", "#4daf4a", "#984ea3"]
+        "range": ["#674a40", "#50a3a4", "#fcaf38", "#f95335"]
       }
     },
     "tooltip": [
