@@ -1,0 +1,56 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Monthly new donors in Malaysia by age group.",
+  "width": "container",
+  "height": 330,
+  "params": [
+    {
+      "name": "selectYear",
+      "value": 2024,
+      "bind": {
+        "input": "range",
+        "min": 2015,
+        "max": 2025,
+        "step": 1,
+        "name": "Year: "
+      }
+    }
+  ],
+  "data": {
+    "url": "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/datasets/newdonors_state.csv"
+  },
+  "transform": [
+    {
+      "filter": "datum.state == 'Malaysia' && year(datum.date) == selectYear"
+    },
+    {
+      "fold": [
+        "17-24", "25-29", "30-34", "35-39",
+        "40-44", "45-49", "50-54", "55-59", "60-64"
+      ],
+      "as": ["age_group", "count"]
+    },
+    {
+      "aggregate": [{"op": "sum", "field": "count", "as": "yearly_count"}],
+      "groupby": ["age_group"]
+    }
+  ],
+  "mark": {"type": "bar"},
+  "encoding": {
+    "y": {
+      "field": "age_group",
+      "type": "nominal",
+      "title": "Age Group",
+      "sort": "-x"
+    },
+    "x": {
+      "field": "yearly_count",
+      "type": "quantitative",
+      "title": "New Donors"
+    },
+    "tooltip": [
+      {"field": "age_group", "type": "nominal", "title": "Age Group"},
+      {"field": "yearly_count", "type": "quantitative", "title": "Donors", "format": ","}
+    ]
+  }
+}

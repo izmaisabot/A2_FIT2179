@@ -1,0 +1,102 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Malaysia monthly donors with pre/post COVID averages.",
+  "width": "container",
+  "height": 450,
+  "data": {
+    "url": "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/datasets/newdonors_state.csv",
+    "format": {"type": "csv"}
+  },
+  "transform": [
+    {"filter": "datum.state == 'Malaysia' && year(datum.date) >= 2015 && year(datum.date) <= 2025"},
+    {"calculate": "datetime(year(datum.date), month(datum.date), 1)", "as": "year_month"},
+    {
+      "aggregate": [{"op": "sum", "field": "total", "as": "monthly_total"}],
+      "groupby": ["year_month"]
+    },
+    {"calculate": "datum.year_month < datetime(2020, 2, 1) ? 'Pre-COVID' : 'Post-COVID'", "as": "period"},
+    {
+      "joinaggregate": [
+        {"op": "mean", "field": "monthly_total", "as": "period_avg"},
+        {"op": "min", "field": "year_month", "as": "period_start"},
+        {"op": "max", "field": "year_month", "as": "period_end"}
+      ],
+      "groupby": ["period"]
+    }
+  ],
+  "layer": [
+    {
+      "mark": {"type": "line", "color": "#4682b4", "strokeWidth": 3},
+      "encoding": {
+        "x": {"field": "year_month", "type": "temporal", "title": "Year", "axis": {"format": "%Y", "grid": true}},
+        "y": {"field": "monthly_total", "type": "quantitative", "title": "Monthly New Donors", "axis": {"grid": true}},
+        "tooltip": [
+          {"field": "year_month", "type": "temporal", "title": "Month", "format": "%B %Y"},
+          {"field": "monthly_total", "type": "quantitative", "title": "Donors", "format": ","}
+        ]
+      }
+    },
+    {
+      "transform": [
+        {"filter": "datum.period == 'Pre-COVID'"},
+        {"aggregate": [
+          {"op": "min", "field": "period_start", "as": "x_start"},
+          {"op": "max", "field": "period_end", "as": "x_end"},
+          {"op": "mean", "field": "period_avg", "as": "y_avg"}
+        ]}
+      ],
+      "mark": {"type": "rule", "strokeWidth": 3, "strokeDash": [8, 4], "color": "#2ca02c"},
+      "encoding": {
+        "x": {"field": "x_start", "type": "temporal"},
+        "x2": {"field": "x_end"},
+        "y": {"field": "y_avg", "type": "quantitative"}
+      }
+    },
+    {
+      "transform": [
+        {"filter": "datum.period == 'Pre-COVID'"},
+        {"aggregate": [
+          {"op": "min", "field": "period_start", "as": "x_start"},
+          {"op": "mean", "field": "period_avg", "as": "y_avg"}
+        ]}
+      ],
+      "mark": {"type": "text", "fontWeight": "bold", "fontSize": 14, "dy": -60, "color": "#1b621b", "align": "left", "dx": 410},
+      "encoding": {
+        "x": {"field": "x_start", "type": "temporal"},
+        "y": {"field": "y_avg", "type": "quantitative"},
+        "text": {"value": "Pre-COVID Avg"}
+      }
+    },
+    {
+      "transform": [
+        {"filter": "datum.period == 'Post-COVID'"},
+        {"aggregate": [
+          {"op": "min", "field": "period_start", "as": "x_start"},
+          {"op": "max", "field": "period_end", "as": "x_end"},
+          {"op": "mean", "field": "period_avg", "as": "y_avg"}
+        ]}
+      ],
+      "mark": {"type": "rule", "strokeWidth": 3, "strokeDash": [8, 4], "color": "#d62728"},
+      "encoding": {
+        "x": {"field": "x_start", "type": "temporal"},
+        "x2": {"field": "x_end"},
+        "y": {"field": "y_avg", "type": "quantitative"}
+      }
+    },
+    {
+      "transform": [
+        {"filter": "datum.period == 'Post-COVID'"},
+        {"aggregate": [
+          {"op": "max", "field": "period_end", "as": "x_end"},
+          {"op": "mean", "field": "period_avg", "as": "y_avg"}
+        ]}
+      ],
+      "mark": {"type": "text", "fontWeight": "bold", "fontSize": 14, "dy": 80, "color": "#8b1a1a", "align": "right", "dx": -5},
+      "encoding": {
+        "x": {"field": "x_end", "type": "temporal"},
+        "y": {"field": "y_avg", "type": "quantitative"},
+        "text": {"value": "Post-COVID Avg"}
+      }
+    }
+  ]
+}

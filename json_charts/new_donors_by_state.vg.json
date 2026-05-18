@@ -1,0 +1,58 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 450,
+  "padding": {"top": -80, "bottom": 0, "left": 0, "right": 0},
+  "params": [
+    {
+      "name": "selectYear",
+      "value": 2024,
+      "bind": {"input": "range", "min": 2015, "max": 2025, "step": 1, "name": "Year: "}
+    }
+  ],
+  "data": {
+    "url": "https://raw.githubusercontent.com/izmaisabot/A2_FIT2179/refs/heads/main/datasets/newdonors_state.csv"
+  },
+  "transform": [
+    {
+      "filter": "year(datum.date) == selectYear && datum.state != 'Malaysia'"
+    },
+    {
+      "calculate": "datum.state == 'W.P. Kuala Lumpur' ? 'Kuala Lumpur' : datum.state == 'W.P. Labuan' ? 'Labuan' : datum.state == 'W.P. Putrajaya' ? 'Putrajaya' : datum.state",
+      "as": "clean_state"
+    },
+    {
+      "aggregate": [{"op": "sum", "field": "total", "as": "yearly_total"}],
+      "groupby": ["clean_state"]
+    },
+    {
+      "lookup": "clean_state",
+      "from": {
+        "data": {
+          "url": "https://raw.githubusercontent.com/jnewbery/CartogramMalaysia/refs/heads/master/public/data/malaysia-states.topojson",
+          "format": {"type": "topojson", "feature": "states"}
+        },
+        "key": "id"
+      },
+      "as": "geo"
+    }
+  ],
+  "projection": {
+    "type": "mercator"
+  },
+  "mark": {"type": "geoshape", "stroke": "white", "strokeWidth": 1},
+  "encoding": {
+    "shape": {"field": "geo", "type": "geojson"},
+    "color": {
+      "field": "yearly_total",
+      "type": "quantitative",
+      "title": "New Donors",
+      "scale": {"scheme": "reds"},
+      "legend": {"orient":"none", "direction": "horizontal", "gradientLength":200, "legendX": 10, "legendY": 380}
+    },
+    "tooltip": [
+      {"field": "clean_state", "type": "nominal", "title": "State"},
+      {"field": "yearly_total", "type": "quantitative", "title": "Total Donors", "format": ","}
+    ]
+  }
+}
